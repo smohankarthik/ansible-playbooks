@@ -1,0 +1,19 @@
+--- #Testing how variables work 
+
+- hosts: '{{ myhosts }}'
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: '{{ gather }}'
+  vars:
+    myhosts: client
+    gather: yes
+    pkg: telnet 
+  tasks:
+  - name: Install mentioned software
+    apt:
+     name: '{{ pkg }}'
+     state: latest
+    register: result
+  - debug: var=result

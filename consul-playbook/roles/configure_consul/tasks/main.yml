@@ -1,0 +1,4 @@
+# This playbook configures the consul 
+
+- name: copy file for consul
+  template: src=consul-server-config.j2 dest=/home/ubuntu/consul-server-config.json

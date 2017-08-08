@@ -1,0 +1,14 @@
+--- #intall apache2 over ubuntu
+- hosts: client
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  vars:
+    username: myuser
+  tasks:
+  - name: Install Apache2 on Ubuntu
+    apt:
+      name: apache2
+      state: latest 
