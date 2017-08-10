@@ -1,0 +1,38 @@
+# This playbook configures the consul
+
+- name: Install PM2
+  npm:
+    name: pm2
+    state: latest
+    global: yes
+
+- name: check for node file
+  stat:
+   path: /usr/bin/node
+  register: nodeLink
+
+- name: Seth Node Path
+  command: ln -s /usr/bin/nodejs /usr/bin/node
+  when: nodeLink.stat.exists == False
+
+- name: check for startupscript
+  stat:
+   path: /etc/systemd/system/pm2-root.service
+  register: pm2Start
+
+- name: Startup pm2
+  command: pm2 startup
+  when: pm2Start.stat.exists == False
+
+
+- name: check for process
+  find:
+   path: /root/.pm2/pids
+   patterns: 'consul-*.pid'
+  register: processExists
+
+- name: Startup Consul service
+  command: pm2 start consul -- agent -config-dir=/home/ubuntu/consul-server-config.json
+
+- name: Save consul process 
+  command: pm2 save

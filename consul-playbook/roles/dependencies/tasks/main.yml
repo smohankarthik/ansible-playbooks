@@ -1,0 +1,14 @@
+#--- #Update apt-repos
+  - name: Update all packages
+    apt:
+     update_cache: yes
+
+#--- #Install dependencies
+  - name: Install dependencies pkg's
+    apt: name={{ item }} state=latest
+    #apt: name: "{{ item }}" state: absent
+    with_items:
+       - unzip
+       - npm
+#    register: result
+#  - debug: var=result

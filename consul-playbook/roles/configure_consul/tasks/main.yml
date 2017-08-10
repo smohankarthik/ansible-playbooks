@@ -1,4 +1,23 @@
 # This playbook configures the consul 
 
+- name: Download consul
+  get_url:
+    url: https://releases.hashicorp.com/consul/0.9.0/consul_0.9.0_linux_amd64.zip
+#    url: https://releases.hashicorp.com/consul/'{{ consul_ver }}\'/consul_'{{ consul_ver }}\'_linux_amd64.zip
+    dest: /usr/local/bin/consul.zip
+
+- name: Extract consul zip directory
+  unarchive:
+    src: /usr/local/bin/consul.zip
+    dest: /usr/local/bin/
+    remote_src: yes
+
+- name: Clean artifact path
+  file:
+    state: absent
+    path: /usr/local/bin/consul.zip
+
 - name: copy file for consul
   template: src=consul-server-config.j2 dest=/home/ubuntu/consul-server-config.json
+
+

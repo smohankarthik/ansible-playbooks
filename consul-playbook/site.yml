@@ -12,41 +12,15 @@
     with_items: "{{ item }}"
     consul_ver: 0.9.0  
   
-#--- #Play Starts
-  
-  tasks: 
-  
-#--- #Update apt-repos
-  - name: Update all packages
-    apt:
-     update_cache: yes
-  
-#--- #Install dependencies
-  - name: Install dependencies pkg's
-    apt: name={{ item }} state=latest
-    #apt: name: "{{ item }}" state: absent
-    with_items:
-       - unzip
-       - npm
-#    register: result
-#  - debug: var=result
-
-  - name: Download consul 
-    get_url:
-      url: https://releases.hashicorp.com/consul/0.9.0/consul_0.9.0_linux_amd64.zip
-#      url: https://releases.hashicorp.com/consul/'{{ consul_ver }}\'/consul_'{{ consul_ver }}\'_linux_amd64.zip
-      dest: /usr/local/bin/consul.zip
-        
-  - name: Extract consul zip directory
-    unarchive:
-      src: /usr/local/bin/consul.zip
-      dest: /usr/local/bin/
-      remote_src: yes
-
-  - name: Clean artifact path
-    file:
-      state: absent
-      path: /usr/local/bin/consul.zip
-
   roles:
+   - role: dependencies
+#
    - role: configure_consul
+#
+   - role: pm2_service
+
+#  tasks:
+#    - debug: var=ansible_all_ipv4_addresses
+#    - debug: var=ansible_default_ipv4.address 
+#    - debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+#    - debug: var=hostvars[inventory_hostname]['ansible_default_ipv6']['address']
