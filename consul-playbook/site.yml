@@ -14,9 +14,9 @@
   
   roles:
    - role: dependencies
-#
+
    - role: configure_consul
-#
+
    - role: pm2_service
 
 #  tasks:

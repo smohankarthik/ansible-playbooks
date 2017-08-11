@@ -26,13 +26,16 @@
 
 
 - name: check for process
-  find:
-   path: /root/.pm2/pids
-   patterns: 'consul-*.pid'
-  register: processExists
+#  find:
+#   path: /root/.pm2/pids
+#   patterns: 'consul-*.pid'
+#  register: processExists
+  shell: find /root/.pm2/pids -name consul-*.pid
+  register: result
 
 - name: Startup Consul service
   command: pm2 start consul -- agent -config-dir=/home/ubuntu/consul-server-config.json
+  when:  result.stdout == ""
 
 - name: Save consul process 
   command: pm2 save
