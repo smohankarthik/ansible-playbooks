@@ -1,23 +1,39 @@
 # This playbook configures the consul 
 
+- name: Check whether consul is already deployed
+  stat:
+    path: "{{ path_consul_bin_file }}"
+  register: consul_check
+
 - name: Download consul
   get_url:
-    url: https://releases.hashicorp.com/consul/0.9.0/consul_0.9.0_linux_amd64.zip
-#    url: https://releases.hashicorp.com/consul/'{{ consul_ver }}\'/consul_'{{ consul_ver }}\'_linux_amd64.zip
-    dest: /usr/local/bin/consul.zip
+#    url: https://releases.hashicorp.com/consul/0.9.0/consul_0.9.0_linux_amd64.zip
+    url: https://releases.hashicorp.com/consul/{{ consul_ver }}/consul_{{ consul_ver }}_linux_amd64.zip
+#    dest: /usr/local/bin/consul.zip
+    dest: "{{ path_consul_zip }}"
+  when: consul_check.stat.exists == False
+
+
+- name: check for zip archive
+  stat:
+   path: "{{ path_consul_zip }}"
+  register: zipArchive
 
 - name: Extract consul zip directory
   unarchive:
-    src: /usr/local/bin/consul.zip
-    dest: /usr/local/bin/
+    src: "{{ path_consul_zip }}"
+#    src: /usr/local/bin/consul.zip
+    dest: "{{ path_consul_bin }}"
+#    dest: /usr/local/bin/
     remote_src: yes
+  when: zipArchive.stat.exists == True
 
 - name: Clean artifact path
   file:
     state: absent
-    path: /usr/local/bin/consul.zip
-
+    path: "{{ path_consul_zip }}"
+#    path: /usr/local/bin/consul.zip
+  when: zipArchive.stat.exists == True
+  
 - name: copy file for consul
   template: src=consul-server-config.j2 dest=/home/ubuntu/consul-server-config.json
-
-

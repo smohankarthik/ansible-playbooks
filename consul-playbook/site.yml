@@ -9,8 +9,8 @@
   vars:
     myhosts: client
     gather: no
-    with_items: "{{ item }}"
-    consul_ver: 0.9.0  
+#    with_items: "{{ item }}"
+#    consul_ver: 0.9.0  
   
   roles:
    - role: dependencies

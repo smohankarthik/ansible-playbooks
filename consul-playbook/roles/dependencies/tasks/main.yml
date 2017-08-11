@@ -6,7 +6,6 @@
 #--- #Install dependencies
   - name: Install dependencies pkg's
     apt: name={{ item }} state=latest
-    #apt: name: "{{ item }}" state: absent
     with_items:
        - unzip
        - npm

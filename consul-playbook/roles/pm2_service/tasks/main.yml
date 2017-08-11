@@ -34,7 +34,7 @@
   register: result
 
 - name: Startup Consul service
-  command: pm2 start consul -- agent -config-dir=/home/ubuntu/consul-server-config.json
+  command: pm2 start consul -- agent -config-dir={{ path_consul_config }}
   when:  result.stdout == ""
 
 - name: Save consul process 

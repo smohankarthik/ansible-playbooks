@@ -1,2 +1,12 @@
 ip: '{{ ansible_default_ipv4.interface }}'
-ip1: hostvars[item]['ansible_default_ipv4']['address'] 
+ip1: hostvars[item]['ansible_default_ipv4']['address']
+
+# VARS FOR configure_consul ROLE
+consul_ver: 0.9.0
+path_consul_zip: /usr/local/bin/consul.zip
+path_consul_bin: /usr/local/bin/ 
+path_consul_bin_file: /usr/local/bin/consul
+
+# VARS FOR pm2_service ROLE
+path_consul_config: /home/ubuntu/consul-server-config.json
+
