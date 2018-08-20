@@ -1,0 +1,20 @@
+server {
+    listen 80;
+    server_name _;
+    server_tokens off;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header Content-Security-Policy "default-src 'self';";
+    client_max_body_size 50M;
+    location /cars {
+        proxy_pass http://127.0.0.1:8000;
+    }
+    location /cars/api/v3 {
+        proxy_pass http://127.0.0.1:8000;
+    }
+    location /property {
+        proxy_pass http://127.0.0.1:3051;
+    }
+    location /property/api/v2 {
+        proxy_pass http://127.0.0.1:3051;
+    }
+}
